@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.example.tx.mybatis.payment.mapper.PaymentMapper" >
+    <insert id="insert" parameterType="org.example.tx.mybatis.payment.domain.Payment">
+        INSERT INTO payment (
+            amount, payer_id, paid_date
+        ) VALUES (
+            #{amount}, #{payer.id}, #{paidDate}
+        )
+    </insert>
+
+    <select id="findByPayer" parameterType="Long" resultMap="paymentResultMap">
+        SELECT
+            id, amount, payer_id, paid_date
+        FROM payment
+        WHERE payer_id = #{payerId}
+    </select>
+
+    <resultMap id="paymentResultMap" type="org.example.tx.mybatis.payment.domain.Payment">
+        <id property="id" column="id"></id>
+        <result property="amount" column="amount"></result>
+        <result property="payer.id" column="payer_id"></result>
+<!--        <association property="payer" ></association>-->
+        <result property="paidDate" column="paid_date" typeHandler="org.apache.ibatis.type.SqlTimestampTypeHandler"></result>
+    </resultMap>
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.example.tx.mybatis.member.mapper.MemberMapper" >
+    <!--<cache />-->
+    <resultMap id="memberDetailsMap" type="org.example.tx.mybatis.member.domain.Member" >
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="point_id" property="point.id" />
+        <result column="point_amount" property="point.amount" />
+    </resultMap>
+
+    <select id="findById" resultMap="memberDetailsMap">
+        SELECT
+            m.id,
+            m.name,
+            p.id AS point_id,
+            p.amount AS point_amount
+        FROM member m
+            INNER JOIN point p ON (p.member_id = m.id)
+        WHERE m.id = #{id}
+    </select>
+</mapper>
